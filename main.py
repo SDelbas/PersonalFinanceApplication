@@ -18,7 +18,6 @@ from configuration import Configuration
 locale.setlocale(locale.LC_NUMERIC, 'nl_BE')
 configuration = Configuration()
 configuration.write()
-exit()
 
 # t1 = datetime.now()
 df_raw = file_manager.importer()
@@ -100,6 +99,13 @@ app.layout = dbc.Container(
     fluid=True
 )
 
+@app.callback(
+    Output('url', 'pathname'),
+    Input('url', 'pathname')
+)
+def auto_open_settings(pathname):
+    if configuration.firstRun:
+        return '/settings'
 
 @app.callback(
     Output("main-screen-content", "children"),
