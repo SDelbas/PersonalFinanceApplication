@@ -7,6 +7,7 @@ class Configuration:
     def __init__(self):
         self.fileName = 'config.json'
         self.firstRun = True
+        self.fileStorage = None
 
         if path.exists('config.json'):
             self.read()

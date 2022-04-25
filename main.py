@@ -99,6 +99,7 @@ app.layout = dbc.Container(
     fluid=True
 )
 
+
 @app.callback(
     Output('url', 'pathname'),
     Input('url', 'pathname')
@@ -106,6 +107,7 @@ app.layout = dbc.Container(
 def auto_open_settings(pathname):
     if configuration.firstRun:
         return '/settings'
+
 
 @app.callback(
     Output("main-screen-content", "children"),
@@ -193,9 +195,31 @@ def render_main_screen_content(pathname):
             )
         ]
     elif pathname == '/settings':
+        warning = None
+        if configuration.firstRun:
+            warning = [
+                html.H4('Warning!', className='alert-heading fw-bold'),
+                html.P('The system has not yet been set up, please execute the setup below.', className='mb-2 fw-bold')
+            ]
+
         return [
-            html.H1('Settings', className='display-5 fw-bold'),
-            html.Hr()
+            dbc.Row(
+                [
+                    html.H1('Settings', className='display-5 fw-bold'),
+                    html.Hr()
+                ]
+            ),
+            dbc.Row([
+                dbc.Card(warning, className='bg-warning', body=True)
+            ]),
+            dbc.Row([
+                dbc.InputGroup(
+                    [
+                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(placeholder=configuration.fileStorage, disabled=False, className='text-left')
+                    ],
+                    className='mb-3'
+                )
+            ]),
         ]
     # elif
     else:
