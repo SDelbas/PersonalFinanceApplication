@@ -6,11 +6,16 @@ import pandas as pd
 
 from configuration import Configuration
 
-configuration = Configuration()
+# # Initialize primary file locations (Should be linked to dash app later on)
+# configuration = Configuration()
+# csv_folder_archive = os.path.join(configuration.fileLocation, 'csv\\csv-archive')  # Storage location for old CSV files
+# csv_folder_new = os.path.join(configuration.fileLocation, 'csv\\csv-new')  # Storage location for new CSV files
+# csv_folder_master = os.path.join(configuration.fileLocation, 'csv\\csv-master')
+
 # Initialize primary file locations (Should be linked to dash app later on)
-csv_folder_archive = os.path.join(configuration.fileLocation, 'csv\\csv-archive')  # Storage location for old CSV files
-csv_folder_new = os.path.join(configuration.fileLocation, 'csv\\csv-new')  # Storage location for new CSV files
-csv_folder_master = os.path.join(configuration.fileLocation, 'csv\\csv-master')
+csv_folder_archive = os.path.join(os.getcwd(), 'csv\\csv-archive')  # Storage location for old CSV files
+csv_folder_new = os.path.join(os.getcwd(), 'csv\\csv-new')  # Storage location for new CSV files
+csv_folder_master = os.path.join(os.getcwd(), 'csv\\csv-master')
 
 
 def importer():
