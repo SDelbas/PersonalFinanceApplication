@@ -1,5 +1,5 @@
-# The purpose of this function is to initialize the Dash application and read/write relevant configuration data in JSON
 import json
+import os
 from os import path
 
 
@@ -7,7 +7,11 @@ class Configuration:
     def __init__(self):
         self.fileName = 'config.json'
         self.firstRun = True
-        self.fileStorage = None
+        self.fileLocation = None
+        self.location_current_csv = None
+        self.location_current_master = None
+        self.location_old_csv = None
+        self.location_old_master = None
 
         if path.exists('config.json'):
             self.read()
@@ -35,13 +39,10 @@ class Configuration:
                 setattr(self, k, v)
         return
 
-    def check_status(self):
-        if self.firstRun in [True, None]:
-            print('Program setup initiated')
-
-            self.firstRun = False
-
-            self.write()
-        return
-
-
+    def set_folders(self, location):
+        self.fileLocation = os.path.normpath(location)
+        self.location_current_csv = os.path.join(location, 'current\\csv')
+        self.location_current_master = os.path.join(location, 'current\\master')
+        self.location_old_csv = os.path.join(location, 'old\\csv')
+        self.location_old_master = os.path.join(location, 'old\\master')
+        self.write()

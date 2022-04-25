@@ -75,6 +75,7 @@ content = dbc.Container(id='main-screen-content', style={'padding': '2rem'}, flu
 # App structure
 app.layout = dbc.Container(
     [
+        html.Div(id='hidden-div', style={'display':'none'}),
         dcc.Location(id='url'),
         dbc.Row(
             [
@@ -215,7 +216,7 @@ def render_main_screen_content(pathname):
             dbc.Row([
                 dbc.InputGroup(
                     [
-                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(placeholder=configuration.fileStorage, disabled=False, className='text-left')
+                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.fileLocation, disabled=False, className='text-left', debounce=True)
                     ],
                     className='mb-3'
                 )
@@ -226,6 +227,16 @@ def render_main_screen_content(pathname):
         return [
             html.H1('404: Page not found.', className='display-4 fw-bold')
         ]
+
+
+@app.callback(
+    Output('hidden-div','children'),
+    Input('location-archive-folder', 'value')
+)
+def set_archive_folder(value):
+    if value is not None:
+        configuration.set_folders(value)
+    return None
 
 
 @app.callback(
