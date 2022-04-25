@@ -17,7 +17,7 @@ from configuration import Configuration
 
 locale.setlocale(locale.LC_NUMERIC, 'nl_BE')
 configuration = Configuration()
-configuration.write()
+configuration.create_folders()
 
 # t1 = datetime.now()
 df_raw = file_manager.importer()
@@ -216,7 +216,7 @@ def render_main_screen_content(pathname):
             dbc.Row([
                 dbc.InputGroup(
                     [
-                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.fileLocation, disabled=False, className='text-left', debounce=True)
+                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.location_folder, disabled=False, className='text-left', debounce=True)
                     ],
                     className='mb-3'
                 )
