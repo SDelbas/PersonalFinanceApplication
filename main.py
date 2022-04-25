@@ -9,14 +9,17 @@ import dash_bootstrap_components as dbc  # https://dash-bootstrap-components.ope
 from dash.dependencies import Input, Output
 from dash.dash_table.Format import Format, Group, Scheme, Symbol
 from dash import html
-import initializer
+import startup
 
 # ---------------------------------------------------------------------------------------------------
 # Set Belgium locale
 
 
 locale.setlocale(locale.LC_NUMERIC, 'nl_BE')
-initializer.initializer()
+#startup.initializer()
+
+config = startup.initialize()
+print(config)
 
 # t1 = datetime.now()
 df_raw = file_manager.importer()
@@ -189,6 +192,7 @@ def render_main_screen_content(pathname):
             html.H1('Settings', className='display-5 fw-bold'),
             html.Hr()
         ]
+    # elif
     else:
         return [
             html.H1('404: Page not found.', className='display-4 fw-bold')
