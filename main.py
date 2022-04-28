@@ -18,6 +18,7 @@ from configuration import Configuration
 locale.setlocale(locale.LC_NUMERIC, 'nl_BE')
 configuration = Configuration()
 configuration.create_folders()
+configuration.write()
 
 # t1 = datetime.now()
 df_raw = file_manager.importer()
@@ -75,7 +76,7 @@ content = dbc.Container(id='main-screen-content', style={'padding': '2rem'}, flu
 # App structure
 app.layout = dbc.Container(
     [
-        html.Div(id='hidden-div', style={'display':'none'}),
+        html.Div(id='hidden-div', style={'display': 'none'}),
         dcc.Location(id='url'),
         dbc.Row(
             [
@@ -101,13 +102,14 @@ app.layout = dbc.Container(
 )
 
 
-@app.callback(
-    Output('url', 'pathname'),
-    Input('url', 'pathname')
-)
-def auto_open_settings(pathname):
-    if configuration.firstRun:
-        return '/settings'
+# ToDo: When commented code is enabled the other screens are no longer updated.
+# @app.callback(
+#     Output('url', 'pathname'),
+#     Input('url', 'pathname')
+# )
+# def auto_open_settings(pathname):
+#     if not configuration.config_correct:
+#         return '/settings'
 
 
 @app.callback(
@@ -197,11 +199,13 @@ def render_main_screen_content(pathname):
         ]
     elif pathname == '/settings':
         warning = None
-        if configuration.firstRun:
-            warning = [
-                html.H4('Warning!', className='alert-heading fw-bold'),
-                html.P('The system has not yet been set up, please execute the setup below.', className='mb-2 fw-bold')
-            ]
+        if not configuration.config_correct:
+            warning = dbc.Row([
+                dbc.Card([
+                    html.H4('Warning!', className='alert-heading fw-bold'),
+                    html.P('The system has not yet been set up, please execute the setup below.', className='mb-2 fw-bold')],
+                    className='bg-warning', body=True)
+            ])
 
         return [
             dbc.Row(
@@ -210,13 +214,11 @@ def render_main_screen_content(pathname):
                     html.Hr()
                 ]
             ),
-            dbc.Row([
-                dbc.Card(warning, className='bg-warning', body=True)
-            ]),
+            warning,
             dbc.Row([
                 dbc.InputGroup(
                     [
-                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.location_folder, disabled=False, className='text-left', debounce=True)
+                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.location_folder, disabled=True, className='text-left', debounce=True)
                     ],
                     className='mb-3'
                 )
@@ -230,7 +232,7 @@ def render_main_screen_content(pathname):
 
 
 @app.callback(
-    Output('hidden-div','children'),
+    Output('hidden-div', 'children'),
     Input('location-archive-folder', 'value')
 )
 def set_archive_folder(value):
