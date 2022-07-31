@@ -1,3 +1,4 @@
 from configuration import Configuration
 
 configuration = Configuration()
+print(vars(configuration))

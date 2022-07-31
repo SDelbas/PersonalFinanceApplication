@@ -33,6 +33,13 @@ def create_folder(basepath, foldername):
     return folderpath
 
 
+global folder_Main
+global folder_BS
+global folder_BS_New
+global folder_BS_Old
+global folder_BS_Processed
+
+
 class Configuration:
     def __init__(self):
         """
