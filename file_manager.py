@@ -30,12 +30,12 @@ def importer():
 
 
 def finder():
-    # main_folder = os.getcwd()  # Main folder where CSV files will be kept. Currently, set to main program folder.
+    # main_folder = os.getcwd()  # Main folderMain where CSV files will be kept. Currently, set to main program folderMain.
 
     # Find new CSV files
     print("")
     print("Looking for new CSV files")
-    files_new = [f for f in os.listdir(csv_folder_new) if os.path.isfile(os.path.join(csv_folder_new, f))]  # Create a list containing each file f in the main program folder
+    files_new = [f for f in os.listdir(csv_folder_new) if os.path.isfile(os.path.join(csv_folder_new, f))]  # Create a list containing each file f in the main program folderMain
     print("Found " + str(len(files_new)) + ' new CSV files:')
     for f in files_new:
         print(os.path.join(csv_folder_new, f))
@@ -45,7 +45,7 @@ def finder():
 
     # Find old CSV folders
     print("Looking for archived CSV folders")
-    folders_archive = [f for f in os.listdir(csv_folder_archive) if os.path.isdir(os.path.join(csv_folder_archive, f))]  # Create a list containing each file f in the main program folder
+    folders_archive = [f for f in os.listdir(csv_folder_archive) if os.path.isdir(os.path.join(csv_folder_archive, f))]  # Create a list containing each file f in the main program folderMain
     print("Found " + str(len(folders_archive)) + ' archived CSV folders:')
     for f in folders_archive:
         print(os.path.join(csv_folder_archive, f))
@@ -54,7 +54,7 @@ def finder():
 
     # Find CSV master files
     print("Looking for CSV master files")
-    files_master = [f for f in os.listdir(csv_folder_master) if os.path.isfile(os.path.join(csv_folder_master, f))]  # Create a list containing each file f in the main program folder
+    files_master = [f for f in os.listdir(csv_folder_master) if os.path.isfile(os.path.join(csv_folder_master, f))]  # Create a list containing each file f in the main program folderMain
     print("Found " + str(len(files_master)) + ' CSV master files:')
     for f in files_master:
         print(os.path.join(csv_folder_master, f))
@@ -73,10 +73,10 @@ def finder():
 
 
 def writer(df):
-    # Create an archive folder if it does not exist yet.
+    # Create an archive folderMain if it does not exist yet.
     if not os.path.isdir(csv_folder_master):
         print()
-        print('Creating new folder at ' + csv_folder_master)
+        print('Creating new folderMain at ' + csv_folder_master)
         os.mkdir(csv_folder_master)
 
     location = csv_folder_master + '\\MASTER' + date.today().strftime('-%Y-%m-%d') + '.csv'
@@ -90,10 +90,10 @@ def mover():
     destination = csv_folder_archive + "\\" + date.today().strftime('%Y-%m-%d')
 
     if len(os.listdir(source)) != 0:
-        # Create an archive folder if it does not exist yet.
+        # Create an archive folderMain if it does not exist yet.
         if not os.path.isdir(destination):
             print()
-            print('Creating new folder at ' + destination)
+            print('Creating new folderMain at ' + destination)
             os.mkdir(destination)
 
         # Move all files from source to destination

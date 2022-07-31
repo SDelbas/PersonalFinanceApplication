@@ -3,7 +3,7 @@ import os
 
 def find_csv():
     # -------------------------------------------------------------------
-    # Look for files in the "csv" folder under the main folder.
+    # Look for files in the "csv" folderMain under the main folderMain.
     print(os.getcwd())
     print()
     dir_path = os.path.dirname(os.path.realpath(__file__))

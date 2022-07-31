@@ -218,7 +218,7 @@ def render_main_screen_content(pathname):
             dbc.Row([
                 dbc.InputGroup(
                     [
-                        dbc.InputGroupText('Archive folder', className='fw-bold w-50'), dbc.Input(id='location-archive-folder', placeholder=configuration.location_folder, disabled=True, className='text-left', debounce=True)
+                        dbc.InputGroupText('Archive folderMain', className='fw-bold w-50'), dbc.Input(id='location-archive-folderMain', placeholder=configuration.location_folder, disabled=True, className='text-left', debounce=True)
                     ],
                     className='mb-3'
                 )
@@ -233,7 +233,7 @@ def render_main_screen_content(pathname):
 
 @app.callback(
     Output('hidden-div', 'children'),
-    Input('location-archive-folder', 'value')
+    Input('location-archive-folderMain', 'value')
 )
 def set_archive_folder(value):
     if value is not None:

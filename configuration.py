@@ -1,24 +1,55 @@
 import json
 import os
 from os import path
+from tkinter import filedialog
+from tkinter import messagebox
 
 
-# ToDo Add observer changes
+# ToDo Add observer changes; when making changes to the configuration object the result should be written to config.json
+
+def designate_folder(message):
+    """
+    Prompts the user to select a folder where all necessary files will be saved.
+
+    :return: Filepath of the selected folder.
+    """
+    if messagebox.askokcancel(title="Designate folder", message=message):
+        return filedialog.askdirectory()
+
+    else:
+        exit()
+
+
+def create_folder(basepath, foldername):
+    """
+    Creates a folder on a specified location with a specified name.
+
+    :param basepath: Location where the folder is to be created.
+    :param foldername: Name of the folder to be created.
+    :return: Return the file path of the new folder.
+    """
+    folderpath = os.path.join(basepath, foldername)
+    os.mkdir(folderpath)
+    return folderpath
+
 
 class Configuration:
     def __init__(self):
+        """
+        Attempts to read config.json. If this does not exist, create a blank template.
+        """
         self.fileName = 'config.json'
-        self.config_correct = False
-        self.location_folder = None
-        self.location_current_csv = None
-        self.location_current_master = None
-        self.location_old_csv = None
-        self.location_old_master = None
-
-        if path.exists('config.json'):
+        if path.exists(self.fileName):
             self.read()
+        else:
+            self.folder_Main = designate_folder("Please designate a folder where you would like to store your .csv files. A new folder will be created there.")
+            self.folder_BS = create_folder(self.folder_Main, "Bank Statements")
+            self.folder_BS_New = create_folder(self.folder_BS, "New")
+            self.folder_BS_Old = create_folder(self.folder_BS, "Old")
+            self.folder_BS_Processed = create_folder(self.folder_BS, "Processed")
 
-        self.check_config()
+        self.config_correct = self.check_config()
+        self.write()
 
     def write(self):
         """
@@ -26,7 +57,7 @@ class Configuration:
         """
         with open(self.fileName, 'w') as jsonfile:
             json.dump(self.__dict__, jsonfile)
-            print('Write successful')
+            print('Configuration file written successfully.')
 
     def read(self):
         """
@@ -36,35 +67,20 @@ class Configuration:
             config_dict = json.load(infile)
             for k, v in config_dict.items():
                 setattr(self, k, v)
-
-    def set_folders(self, location):
-        """
-        Set the data storage folders and write the updated configuration file to JSON.
-
-        :param location: Where should all data storage folders be placed
-        """
-        self.location_folder = os.path.normpath(location)
-        self.location_current_csv = os.path.join(location, 'current\\csv')
-        self.location_current_master = os.path.join(location, 'current\\master')
-        self.location_old_csv = os.path.join(location, 'old\\csv')
-        self.location_old_master = os.path.join(location, 'old\\master')
-
-        self.create_folders()
-
-        self.write()
-
-    def create_folders(self):
-        for value in {value for key, value in self.__dict__.items() if 'location' in key}:
-            if not os.path.exists(value):
-                os.makedirs(value)
+        print("Configuration file read successfully.")
 
     def check_config(self):
-        fault = False
-        if self.location_folder is None or not path.exists('config.json'):
-            fault = True
-        for value in {value for key, value in self.__dict__.items() if 'location' in key}:
-            if not os.path.exists(value):
-                fault = True
+        """
+        Checks if the configuration is correct. This means that all folders are existing and designated.
 
-        if fault is False:
-            self.config_correct = True
+        :return: True if the configuration is correct, otherwise False.
+        """
+        config_fault = False
+        for value in {value for key, value in self.__dict__.items() if 'folder' in key}:  # wat is dit nu weer?
+            if not os.path.exists(value):
+                config_fault = True
+        if config_fault is False:
+            print("The configuration is correct. All folders are identified and exist.")
+            return True
+        else:
+            return False

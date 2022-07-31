@@ -6,7 +6,7 @@ from find_csv import find_csv
 
 
 def read_csv():
-    # Specify folder containing new .csv files to be imported
+    # Specify folderMain containing new .csv files to be imported
     dir_path_new = os.path.dirname(os.path.realpath(__file__))
     dir_path_new = os.path.join(dir_path_new, "csv\\csv-new")
 
